@@ -3,7 +3,7 @@ from toolbox import CatchException, report_execption, write_results_to_file, pre
 fast_debug = False
 
 
-def 解析docx(file_manifest, project_folder, top_p, temperature, chatbot, history, systemPromptTxt):
+def 解析docx(file_manifest, project_folder, top_p, api_key, temperature, chatbot, history, systemPromptTxt):
     import time, os
     # pip install python-docx 用于docx格式，跨平台
     # pip install pywin32 用于doc格式，仅支持Win平台
@@ -40,7 +40,7 @@ def 解析docx(file_manifest, project_folder, top_p, temperature, chatbot, histo
         if not fast_debug:
             msg = '正常'
             # ** gpt request **
-            gpt_say = yield from predict_no_ui_but_counting_down(i_say, i_say_show_user, chatbot, top_p, temperature,
+            gpt_say = yield from predict_no_ui_but_counting_down(i_say, i_say_show_user, chatbot, top_p, api_key, temperature,
                                                                  history=[])  # 带超时倒计时
             chatbot[-1] = (i_say_show_user, gpt_say)
             history.append(i_say_show_user);
@@ -66,7 +66,7 @@ def 解析docx(file_manifest, project_folder, top_p, temperature, chatbot, histo
     if not fast_debug:
         msg = '正常'
         # ** gpt request **
-        gpt_say = yield from predict_no_ui_but_counting_down(i_say, i_say, chatbot, top_p, temperature,
+        gpt_say = yield from predict_no_ui_but_counting_down(i_say, i_say, chatbot, top_p, api_key, temperature,
                                                              history=history)  # 带超时倒计时
 
         chatbot[-1] = (i_say, gpt_say)
@@ -79,7 +79,7 @@ def 解析docx(file_manifest, project_folder, top_p, temperature, chatbot, histo
 
 
 @CatchException
-def 总结word文档(txt, top_p, temperature, chatbot, history, systemPromptTxt, WEB_PORT):
+def 总结word文档(txt, top_p, api_key, temperature, chatbot, history, systemPromptTxt, WEB_PORT):
     import glob, os
 
     # 基本信息：功能、贡献者
@@ -124,4 +124,4 @@ def 总结word文档(txt, top_p, temperature, chatbot, history, systemPromptTxt,
         return
 
     # 开始正式执行任务
-    yield from 解析docx(file_manifest, project_folder, top_p, temperature, chatbot, history, systemPromptTxt)
+    yield from 解析docx(file_manifest, project_folder, top_p, api_key, temperature, chatbot, history, systemPromptTxt)

@@ -5,7 +5,7 @@ from toolbox import CatchException, write_results_to_file
 
 
 @CatchException
-def 全项目切换英文(txt, top_p, temperature, chatbot, history, sys_prompt, WEB_PORT):
+def 全项目切换英文(txt, top_p, api_key, temperature, chatbot, history, sys_prompt, WEB_PORT):
     history = []    # 清空历史，以免输入溢出
     # 集合文件
     import time, glob, os
@@ -32,7 +32,7 @@ def 全项目切换英文(txt, top_p, temperature, chatbot, history, sys_prompt,
             file_content = f.read()
         i_say = f'接下来请将以下代码中包含的所有中文转化为英文，只输出代码，文件名是{fp}，文件代码是 ```{file_content}```'
         # ** gpt request **
-        gpt_say = predict_no_ui_long_connection(inputs=i_say, top_p=top_p, temperature=temperature, history=history, sys_prompt=sys_prompt)
+        gpt_say = predict_no_ui_long_connection(inputs=i_say, top_p=top_p, api_key=api_key, temperature=temperature, history=history, sys_prompt=sys_prompt)
         mutable_return[index] = gpt_say
 
     # 所有线程同时开始执行任务函数

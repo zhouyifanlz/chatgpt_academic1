@@ -40,6 +40,9 @@ set_theme = adjust_theme()
 cancel_handles = []
 with gr.Blocks(theme=set_theme, analytics_enabled=False, css=advanced_css) as demo:
     gr.HTML(title_html)
+    # To add a Duplicate Space badge
+    gr.HTML('''<center><a href="https://huggingface.co/spaces/qingxu98/gpt-academic?duplicate=true"><img src="https://bit.ly/3gLdBN6" alt="Duplicate Space"></a>请您打开此页面后务必点击上方的“复制空间”（Duplicate Space）按钮！<br/>切忌在“复制空间”（Duplicate Space）之前填入API_KEY或进行提问，否则您的API_KEY将极可能被空间所有者攫取！</center>''')
+
     with gr.Row().style(equal_height=True):
         with gr.Column(scale=2):
             chatbot = gr.Chatbot()
@@ -47,7 +50,9 @@ with gr.Blocks(theme=set_theme, analytics_enabled=False, css=advanced_css) as de
             history = gr.State([])
         with gr.Column(scale=1):
             with gr.Row():
-                txt = gr.Textbox(show_label=False, placeholder="Input question here.").style(container=False)
+                api_key = gr.Textbox(show_label=False, placeholder="输入API_KEY，输入后自动生效.").style(container=False)
+            with gr.Row():
+                txt = gr.Textbox(show_label=False, placeholder="输入问题.").style(container=False)
             with gr.Row():
                 submitBtn = gr.Button("提交", variant="primary")
             with gr.Row():
@@ -93,7 +98,7 @@ with gr.Blocks(theme=set_theme, analytics_enabled=False, css=advanced_css) as de
         return ret
     checkboxes.select(fn_area_visibility, [checkboxes], [area_basic_fn, area_crazy_fn] )
     # 整理反复出现的控件句柄组合
-    input_combo = [txt, top_p, temperature, chatbot, history, system_prompt]
+    input_combo = [txt, top_p, api_key, temperature, chatbot, history, system_prompt]
     output_combo = [chatbot, history, status]
     predict_args = dict(fn=predict, inputs=input_combo, outputs=output_combo)
     empty_txt_args = dict(fn=lambda: "", inputs=[], outputs=[txt]) # 用于在提交后清空输入栏
@@ -142,4 +147,4 @@ def auto_opentab_delay():
 
 auto_opentab_delay()
 demo.title = "ChatGPT 学术优化"
-demo.queue(concurrency_count=CONCURRENT_COUNT).launch(server_name="0.0.0.0", share=True, server_port=PORT, auth=AUTHENTICATION)
+demo.queue(concurrency_count=CONCURRENT_COUNT).launch(server_name="0.0.0.0", share=False)
