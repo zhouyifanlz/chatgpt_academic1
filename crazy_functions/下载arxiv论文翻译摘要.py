@@ -132,7 +132,7 @@ def get_name(_url_):
 
 
 @CatchException
-def 下载arxiv论文并翻译摘要(txt, top_p, temperature, chatbot, history, systemPromptTxt, WEB_PORT):
+def 下载arxiv论文并翻译摘要(txt, top_p, api_key, temperature, chatbot, history, systemPromptTxt, WEB_PORT):
 
     CRAZY_FUNCTION_INFO = "下载arxiv论文并翻译摘要，函数插件作者[binary-husky]。正在提取摘要并下载PDF文档……"
     import glob
@@ -172,7 +172,7 @@ def 下载arxiv论文并翻译摘要(txt, top_p, temperature, chatbot, history, 
     yield chatbot, history, '正常'
     msg = '正常'
     # ** gpt request **
-    gpt_say = yield from predict_no_ui_but_counting_down(i_say, i_say_show_user, chatbot, top_p, temperature, history=[])   # 带超时倒计时
+    gpt_say = yield from predict_no_ui_but_counting_down(i_say, i_say_show_user, chatbot, top_p, api_key, temperature, history=[])   # 带超时倒计时
     chatbot[-1] = (i_say_show_user, gpt_say)
     history.append(i_say_show_user); history.append(gpt_say)
     yield chatbot, history, msg

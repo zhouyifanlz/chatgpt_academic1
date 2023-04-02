@@ -131,11 +131,11 @@
 
 这个程序文件中包含了几个函数，分别是：
 
-1. `解析源代码(file_manifest, project_folder, top_p, temperature, chatbot, history, systemPromptTxt)`：通过输入文件路径列表对程序文件进行逐文件分析，根据分析结果做出整体功能和构架的概括，并生成包括每个文件功能的markdown表格。
-2. `解析项目本身(txt, top_p, temperature, chatbot, history, systemPromptTxt, WEB_PORT)`：对当前文件夹下的所有Python文件及其子文件夹进行逐文件分析，并生成markdown表格。
-3. `解析一个Python项目(txt, top_p, temperature, chatbot, history, systemPromptTxt, WEB_PORT)`：对指定路径下的所有Python文件及其子文件夹进行逐文件分析，并生成markdown表格。
-4. `解析一个C项目的头文件(txt, top_p, temperature, chatbot, history, systemPromptTxt, WEB_PORT)`：对指定路径下的所有头文件进行逐文件分析，并生成markdown表格。
-5. `解析一个C项目(txt, top_p, temperature, chatbot, history, systemPromptTxt, WEB_PORT)`：对指定路径下的所有.h、.cpp、.c文件及其子文件夹进行逐文件分析，并生成markdown表格。
+1. `解析源代码(file_manifest, project_folder, top_p, api_key, temperature, chatbot, history, systemPromptTxt)`：通过输入文件路径列表对程序文件进行逐文件分析，根据分析结果做出整体功能和构架的概括，并生成包括每个文件功能的markdown表格。
+2. `解析项目本身(txt, top_p, api_key, temperature, chatbot, history, systemPromptTxt, WEB_PORT)`：对当前文件夹下的所有Python文件及其子文件夹进行逐文件分析，并生成markdown表格。
+3. `解析一个Python项目(txt, top_p, api_key, temperature, chatbot, history, systemPromptTxt, WEB_PORT)`：对指定路径下的所有Python文件及其子文件夹进行逐文件分析，并生成markdown表格。
+4. `解析一个C项目的头文件(txt, top_p, api_key, temperature, chatbot, history, systemPromptTxt, WEB_PORT)`：对指定路径下的所有头文件进行逐文件分析，并生成markdown表格。
+5. `解析一个C项目(txt, top_p, api_key, temperature, chatbot, history, systemPromptTxt, WEB_PORT)`：对指定路径下的所有.h、.cpp、.c文件及其子文件夹进行逐文件分析，并生成markdown表格。
 
 程序中还包含了一些辅助函数和变量，如CatchException装饰器函数，report_execption函数、write_results_to_file函数等。在执行过程中还会调用其他模块中的函数，如toolbox模块的函数和predict模块的函数。
 

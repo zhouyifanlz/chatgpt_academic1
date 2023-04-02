@@ -1,5 +1,3 @@
-assert False, "Huggingface Version Please Run app.py"
-
 import os; os.environ['no_proxy'] = '*' # 避免代理网络产生意外污染
 import gradio as gr
 from predict import predict

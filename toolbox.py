@@ -16,13 +16,13 @@ def get_reduce_token_percent(text):
     except:
         return 0.5, '不详'
 
-def predict_no_ui_but_counting_down(i_say, i_say_show_user, chatbot, top_p, temperature, history=[], sys_prompt='', long_connection=True):
+def predict_no_ui_but_counting_down(i_say, i_say_show_user, chatbot, top_p, api_key, temperature, history=[], sys_prompt='', long_connection=True):
     """
         调用简单的predict_no_ui接口，但是依然保留了些许界面心跳功能，当对话太长时，会自动采用二分法截断
         i_say: 当前输入
         i_say_show_user: 显示到对话界面上的当前输入，例如，输入整个文件时，你绝对不想把文件的内容都糊到对话界面上
         chatbot: 对话界面句柄
-        top_p, temperature: gpt参数
+        top_p, api_key, temperature: gpt参数
         history: gpt参数 对话历史
         sys_prompt: gpt参数 sys_prompt
         long_connection: 是否采用更稳定的连接方式（推荐）
@@ -39,9 +39,9 @@ def predict_no_ui_but_counting_down(i_say, i_say_show_user, chatbot, top_p, temp
         while True:
             try:
                 if long_connection:
-                    mutable[0] = predict_no_ui_long_connection(inputs=i_say, top_p=top_p, temperature=temperature, history=history, sys_prompt=sys_prompt)
+                    mutable[0] = predict_no_ui_long_connection(inputs=i_say, top_p=top_p, api_key=api_key, temperature=temperature, history=history, sys_prompt=sys_prompt)
                 else:
-                    mutable[0] = predict_no_ui(inputs=i_say, top_p=top_p, temperature=temperature, history=history, sys_prompt=sys_prompt)
+                    mutable[0] = predict_no_ui(inputs=i_say, top_p=top_p, api_key=api_key, temperature=temperature, history=history, sys_prompt=sys_prompt)
                 break
             except ConnectionAbortedError as token_exceeded_error:
                 # 尝试计算比例，尽可能多地保留文本
@@ -108,9 +108,9 @@ def CatchException(f):
         装饰器函数，捕捉函数f中的异常并封装到一个生成器中返回，并显示到聊天当中。
     """
     @wraps(f)
-    def decorated(txt, top_p, temperature, chatbot, history, systemPromptTxt, WEB_PORT):
+    def decorated(txt, top_p, api_key, temperature, chatbot, history, systemPromptTxt, WEB_PORT):
         try:
-            yield from f(txt, top_p, temperature, chatbot, history, systemPromptTxt, WEB_PORT)
+            yield from f(txt, top_p, api_key, temperature, chatbot, history, systemPromptTxt, WEB_PORT)
         except Exception as e:
             from check_proxy import check_proxy
             from toolbox import get_conf
@@ -313,14 +313,14 @@ def read_single_conf_with_lru_cache(arg):
     try: r = getattr(importlib.import_module('config_private'), arg)
     except: r = getattr(importlib.import_module('config'), arg)
     # 在读取API_KEY时，检查一下是不是忘了改config
-    if arg=='API_KEY':
-        # 正确的 API_KEY 是 "sk-" + 48 位大小写字母数字的组合
-        API_MATCH = re.match(r"sk-[a-zA-Z0-9]{48}$", r)
-        if API_MATCH:
-            print(f"[API_KEY] 您的 API_KEY 是: {r[:15]}*** API_KEY 导入成功")
-        else:
-            assert False, "正确的 API_KEY 是 'sk-' + '48 位大小写字母数字' 的组合，请在config文件中修改API密钥, 添加海外代理之后再运行。" + \
-                        "（如果您刚更新过代码，请确保旧版config_private文件中没有遗留任何新增键值）"
+    # if arg=='API_KEY':
+    #     # 正确的 API_KEY 是 "sk-" + 48 位大小写字母数字的组合
+    #     API_MATCH = re.match(r"sk-[a-zA-Z0-9]{48}$", r)
+    #     if API_MATCH:
+    #         print(f"[API_KEY] 您的 API_KEY 是: {r[:15]}*** API_KEY 导入成功")
+    #     else:
+    #         assert False, "正确的 API_KEY 是 'sk-' + '48 位大小写字母数字' 的组合，请在config文件中修改API密钥, 添加海外代理之后再运行。" + \
+    #                     "（如果您刚更新过代码，请确保旧版config_private文件中没有遗留任何新增键值）"
     if arg=='proxies':
         if r is None: 
             print('[PROXY] 网络代理状态：未配置。无代理状态下很可能无法访问。建议：检查USE_PROXY选项是否修改。')
